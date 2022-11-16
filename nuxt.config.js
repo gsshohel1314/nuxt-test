@@ -1,16 +1,28 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "ewu-fontend",
+    title: "NUXTJS Website Designing from Scratch",
     htmlAttrs: {
       lang: "en",
     },
 
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
-      { name: "format-detection", content: "telephone=no" },
+      {
+        charset: "utf-8",
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+      {
+        hid: "description",
+        name: "description",
+        content: "NUXTJS Website Designing from Scratch",
+      },
+      {
+        name: "format-detection",
+        content: "telephone=no",
+      },
     ],
 
     link: [
@@ -23,6 +35,10 @@ export default {
         rel: "stylesheet",
         href: "/css/bootstrap.min.css",
       },
+      {
+        rel: "stylesheet",
+        href: "/css/custom.css",
+      },
     ],
 
     script: [
@@ -33,7 +49,7 @@ export default {
       {
         type: "text/javascript",
         src: "/js/popper.min.js",
-      }
+      },
     ],
   },
 
