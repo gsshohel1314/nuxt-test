@@ -44,6 +44,10 @@ export default {
     script: [
       {
         type: "text/javascript",
+        src: "https://code.jquery.com/jquery-3.6.1.min.js",
+      },
+      {
+        type: "text/javascript",
         src: "/js/bootstrap.bundle.min.js",
       },
       {
@@ -79,4 +83,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Progress Bar
+  loading: {
+    color: "red",
+    height: "5px",
+    duration: 1000,
+    rtl: true,
+    continuous: true,
+  },
 };
