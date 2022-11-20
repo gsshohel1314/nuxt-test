@@ -28,6 +28,9 @@
                   <p v-else-if="$fetchState.error">An error occurred :(</p>
                   <tbody v-else >
                     <tr v-for="(product,i) in products" :key="product.id">
+                      <td>
+                        <img :src="`http://localhost:8000/images/product/`+product.image" alt="" style="width: 60px; height: 60px;">
+                      </td>
                       <td>{{ product.name }}</td>
                       <td>{{ product.detail }}</td>
                       <td>
@@ -49,14 +52,18 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <form @submit.prevent="editMode ? update() : store()">
+                    <form @submit.prevent="editMode ? update() : store()" enctype="multipart/form-data">
                       <div class="modal-body">
                         <div class="form-group col-md-12 mb-2">
-                          <input type="text" name="name" class="form-control" id="product-name" placeholder="Product Name" required="required" v-model="form.name">
+                          <input type="text" class="form-control" placeholder="Product Name" required="required" v-model="form.name">
                         </div>
 
                         <div class="form-group col-md-12 mb-2">
-                          <textarea name="detail" class="form-control" id="product-detail" placeholder="Product Detail" rows="3" v-model="form.detail"></textarea>
+                          <textarea class="form-control" placeholder="Product Detail" rows="3" v-model="form.detail"></textarea>
+                        </div>
+
+                        <div class="form-group col-md-12 mb-2">
+                          <input type="file" class="form-control" v-on:change="onFileChange">
                         </div>
 
                         <div class="float-end mb-3">
@@ -88,9 +95,9 @@ export default {
       editMode: false,
 
       form: {
-        id: "",
         name: "",
         detail: "",
+        image: '',
       },
 
       products: [],
@@ -108,17 +115,24 @@ export default {
       $('#createEditModal').modal('show');
     },
 
+    onFileChange(e){
+        this.form.image = e.target.files[0];
+    },
+
     store() {
-      // const formData = new FormData();
-      // for (let [key, value] of Object.entries(this.form)) {
-      //   formData.append(key, value);
-      // }
+      const formData = new FormData();
+      for (let [key, value] of Object.entries(this.form)) {
+        formData.append(key, value);
+      }
+      const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+      }
+
       let url = `${this.backendUrl}api/products`;
-      this.$axios.post(url, this.form)
+      this.$axios.post(url, formData, config)
 
         .then(res => {
-          this.products.unshift(res.data);
-          this.form = '';
+          this.products.push(res.data);
           $('#createEditModal').modal('hide');
         })
 
@@ -144,13 +158,6 @@ export default {
         .then(res => {
           this.form = '';
           $('#createEditModal').modal('hide');
-
-          const swal = inject("$swal");
-      swal.fire({
-          title: "hello",
-          timer: 2000,
-      });
-
         })
 
         .catch(error => {
